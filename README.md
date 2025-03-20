@@ -1,2 +1,2 @@
 # gatitosAPP
-Un sitio web en HTML, CSS y JAVASCRIPT que agrega gatitos según las especificaciones
+Sitio Web dedicado a agregar fotos de gatitos, incluyendo su nombre, raza e imagen. Versión 1.0
