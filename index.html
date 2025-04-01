@@ -11,8 +11,14 @@
         <header>
             <h1>Página de Gatitos</h1>
         </header>
+        <div class="filter-container">
+            <label for="filterRaza">Filtrar por raza:</label>
+            <select id="filterRaza" onchange="filtrarPorRaza()">
+                <option value="all">Todas las razas</option>
+            </select>
+        </div>
         <div class="teams-container" id="teamsContainer">
-            <h2>Mis Gatitos</h2><!--Los gatitos se agregarán aquí -->
+            <h2>Hola</h2><!--Los gatitos se agregarán aquí -->
         </div>
         <button class="add-team-btn" onclick="addRandomTeam()">Agregar Gatito</button>
     </div>
