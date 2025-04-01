@@ -1,6 +1,6 @@
 // Variables globales
-const gatitos = [];
-
+//const gatitos = [];
+let gatitos = JSON.parse(localStorage.getItem('gatitos')) || [];
 // Función para agregar un nuevo gatito
 function addRandomTeam() {
     // Crear un formulario para ingresar los datos del gatito
@@ -54,9 +54,13 @@ function guardarGatito() {
     
     // Agregar el gatito al array
     gatitos.push(gatito);
+
+    //Guardar en LolcalStorage
+    localStorage.setItem('gatitos', JSON.stringify(gatitos));
     
     // Actualizar la vista
     renderizarGatitos();
+    actualizarFiltroRazas();
     
     // Eliminar el formulario
     const formulario = document.querySelector('.formulario-gatito');
@@ -77,14 +81,14 @@ function cancelarGatito() {
 }
 
 // Función para renderizar los gatitos en el contenedor
-function renderizarGatitos() {
+function renderizarGatitos(gatitosAMostrar = gatitos) {
     const container = document.getElementById('teamsContainer');
     
     // Limpiar el contenedor
     container.innerHTML = '<h2>Mis Gatitos</h2>';
     
     // Si no hay gatitos, mostrar un mensaje
-    if (gatitos.length === 0) {
+    if (gatitosAMostrar.length === 0) {
         container.innerHTML += '<p class="no-gatitos">No hay gatitos agregados aún.</p>';
         return;
     }
@@ -94,7 +98,7 @@ function renderizarGatitos() {
     galeriaGatitos.className = 'galeria-gatitos';
     
     // Agregar cada gatito al contenedor
-    gatitos.forEach(gatito => {
+    gatitosAMostrar.forEach(gatito => {
         const gatitoElement = document.createElement('div');
         gatitoElement.className = 'gatito-card';
         gatitoElement.innerHTML = `
@@ -111,7 +115,7 @@ function renderizarGatitos() {
     });
     
     container.appendChild(galeriaGatitos);
-}
+} 
 
 // Función para eliminar un gatito
 function eliminarGatito(id) {
@@ -123,8 +127,36 @@ function eliminarGatito(id) {
         }
     }
 }
+// Función para llenar el filtro de razas
+function actualizarFiltroRazas() {
+    const filtroRaza = document.getElementById('filterRaza');
+    const razasUnicas = [...new Set(gatitos.map(gatito => gatito.raza))];
 
+    // Limpiar las opciones del filtro
+    filtroRaza.innerHTML = '<option value="all">Todas las razas</option>';
+
+    // Agregar las razas únicas al filtro
+    razasUnicas.forEach(raza => {
+        const option = document.createElement('option');
+        option.value = raza;
+        option.textContent = raza;
+        filtroRaza.appendChild(option);
+    });
+}
+
+function filtrarPorRaza() {
+    const razaSeleccionada = document.getElementById('filterRaza').value;
+
+    // Filtrar los gatitos según la raza seleccionada
+    const gatitosFiltrados = razaSeleccionada === 'all'
+        ? gatitos
+        : gatitos.filter(gatito => gatito.raza === razaSeleccionada);
+
+    // Renderizar los gatitos filtrados
+    renderizarGatitos(gatitosFiltrados);
+}
 // Inicializar la aplicación
 document.addEventListener('DOMContentLoaded', function() {
     renderizarGatitos();
+    actualizarFiltroRazas();
 });
